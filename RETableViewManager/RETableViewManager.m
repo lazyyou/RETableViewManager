@@ -126,9 +126,15 @@
     if (!bundle)
         bundle = [NSBundle mainBundle];
     
-    if ([bundle pathForResource:identifier ofType:@"nib"]) {
+    NSString *newIdentifier = identifier;
+    NSArray *identifiers = [identifier componentsSeparatedByString:@"."];
+    if (identifiers.count > 1) {
+        newIdentifier = identifiers[1];
+    }
+    
+    if ([bundle pathForResource:newIdentifier ofType:@"nib"]) {
         self.registeredXIBs[identifier] = objectClass;
-        [self.tableView registerNib:[UINib nibWithNibName:identifier bundle:bundle] forCellReuseIdentifier:objectClass];
+        [self.tableView registerNib:[UINib nibWithNibName:newIdentifier bundle:bundle] forCellReuseIdentifier:objectClass];
     }
 }
 
